@@ -4,44 +4,64 @@
 @{
     ViewData["Title"] = "Basic Form";
 }
-
+<article>
+    <p>This page demonstrates a basic Form, without bindings.</p>
+    <p>It uses the <code>Request.Form</code> to access the submitted values.</p>
+</article>
 <form method="POST">
     <label class="form-label" for="favouriteColour">Favourite Colour</label>
     <input class="form-control" type="text" name="favouriteColour" id="colour">
 
     <label class="form-label" for="currentlyReading">What are you currently reading?</label>
     <input class="form-control" type="text" name="currentlyReading" id="reading">
-    <div class="form-check">
-
-    <input class="form-check-input" type="radio" value="Bird" id="bird" name="pet">
-    <label class="form-check-label" for="bird">Bird</label>
+    
+    <div class="custom-control custom-radio">
+        <input class="custom-control-input" type="radio" value="Bird" id="bird" name="pet">
+        <label class="custom-control-label" for="bird">Bird</label>
     </div>
-    <div class="form-check">
-
-    <input class="form-check-input" type="radio" value="Cat" id="cat" name="pet">
-    <label class="form-check-label" for="cat">Cat</label>
+    
+    <div class="custom-control custom-radio">
+        <input class="custom-control-input" type="radio" value="Cat" id="cat" name="pet">
+        <label class="custom-control-label" for="cat">Cat</label>
     </div>
-    <div class="form-check">
-
-    <input class="form-check-input" type="radio" value="Dog" id="dog" name="pet">
-    <label class="form-check-label" for="dog">Dog</label>
+    
+    <div class="custom-control custom-radio">
+        <input class="custom-control-input" type="radio" value="Dog" id="dog" name="pet">
+        <label class="custom-control-label" for="dog">Dog</label>
     </div>
-    <div class="form-check">
-
-    <input class="form-check-input" type="radio" value="Fish" id="fish" name="pet">
-    <label class="form-check-label" for="fish">Fish</label>
+    
+    <div class="custom-control custom-radio">
+        <input class="custom-control-input" type="radio" value="Fish" id="fish" name="pet">
+        <label class="custom-control-label" for="fish">Fish</label>
     </div>
-    <div class="form-check">
-
-    <input class="form-check-input" type="radio" value="None" id="none" name="pet">
-    <label class="form-check-label" for="none">None</label>
+    
+    <div class="custom-control custom-radio">
+        <input class="custom-control-input" type="radio" value="None" id="none" name="pet">
+        <label class="custom-control-label" for="none">None</label>
     </div>
     <button class="btn btn-primary" type="submit" id="formSubmit">Submit</button>
 </form>
-<div id="formSubmissionResponses"></div>
+<hr>
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Your form submission</h3>
+    </div>
+    <div class="card-body" id="formSubmissionResponses">
+
+    </div>
+</div>
 @section Scripts{
     <script>
         let submitBtn = document.querySelector("#formSubmit");
+
+        submitBtn.addEventListener('click', (event) => {
+            // Block the normal submission of the form in order
+            // to return the submission values to the page
+            // and handle with JavaScript Fetch API
+            event.preventDefault();
+            getSubmission();
+        });
+
         let formBody = document.querySelector("form");
         function getSubmission(event) {
             fetch('?handler=',
@@ -57,7 +77,6 @@
                 console.log(data);
                 let formSubmissionResponses = document.querySelector("#formSubmissionResponses");
                 formSubmissionResponses.innerHTML = "";
-                formSubmissionResponses.innerHTML += "<h3>Your form submission</h3>";
                 data.forEach(item => {
                     formSubmissionResponses.innerHTML += `<h4>Key: ${item.key}</h4>`;
                     formSubmissionResponses.innerHTML += `<p>Item: ${item.value}</p>`;
